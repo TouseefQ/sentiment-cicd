@@ -1,3 +1,4 @@
 flask
 textblob
 pytest
+gunicorn
