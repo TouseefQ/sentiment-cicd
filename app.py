@@ -1,15 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from textblob import TextBlob
 
 app = Flask(__name__)
 
 def analyze_sentiment(text):
-    """
-    Core Logic: Returns 'Positive', 'Negative', or 'Neutral'
-    """
     analysis = TextBlob(text)
     polarity = analysis.sentiment.polarity
-    
     if polarity > 0:
         return "Positive"
     elif polarity < 0:
@@ -19,7 +15,7 @@ def analyze_sentiment(text):
 
 @app.route('/')
 def home():
-    return "Sentiment Analysis API is Running!"
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():

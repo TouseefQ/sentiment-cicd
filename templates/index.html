@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sentiment Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Sentiment Analyzer</h1>
+        <p>Type a sentence below to see if it's Positive, Negative, or Neutral.</p>
+        
+        <textarea id="userInput" placeholder="e.g., I absolutely love this product!"></textarea>
+        
+        <button onclick="analyzeSentiment()">Analyze Text</button>
+        
+        <div id="result" class="hidden">
+            <span id="sentimentLabel"></span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
