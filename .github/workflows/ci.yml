@@ -1,0 +1,30 @@
+name: CI Pipeline
+
+# Trigger: When do we run this?
+on: [push]
+
+jobs:
+  test-code:
+    # The Robot's OS (Linux is standard/fast)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Download your code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Step 3: Install dependencies
+      - name: Install libraries
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Run the Test (The Moment of Truth)
+      - name: Run Tests
+        run: python -m pytest
