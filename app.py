@@ -61,10 +61,10 @@ def predict():
     if not data or 'text' not in data:
         return jsonify({'error': 'Missing required field: text'}), 400
     
-    text = data.get('text', '')
+    text = data.get('text')
     
-    # Security: Validate text is string type
-    if not isinstance(text, str):
+    # Security: Validate text exists and is string type
+    if text is None or not isinstance(text, str):
         return jsonify({'error': 'Text must be a string'}), 400
     
     # Security: Validate text length

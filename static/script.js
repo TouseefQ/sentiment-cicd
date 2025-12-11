@@ -37,6 +37,13 @@ async function analyzeSentiment() {
         }
         
         const sentiment = data.sentiment;
+        
+        // Security: Validate sentiment value against expected values
+        const validSentiments = ['Positive', 'Negative', 'Neutral'];
+        if (!validSentiments.includes(sentiment)) {
+            alert('Invalid response from server.');
+            return;
+        }
 
         // 3. Update the UI (using textContent for security)
         sentimentLabel.textContent = `Sentiment: ${sentiment}`;
