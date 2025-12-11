@@ -1,4 +1,4 @@
-from app import analyze_sentiment, app
+from app import analyze_sentiment, app, MAX_TEXT_LENGTH
 import pytest
 
 def test_positive_sentiment():
@@ -27,7 +27,7 @@ def test_empty_text():
 
 def test_text_too_long():
     """Test if the model rejects text that is too long"""
-    text = "a" * 5001  # More than 5000 characters
+    text = "a" * (MAX_TEXT_LENGTH + 1)  # More than MAX_TEXT_LENGTH characters
     result = analyze_sentiment(text)
     assert result is None
 
@@ -72,7 +72,7 @@ def test_predict_endpoint_empty_text():
 def test_predict_endpoint_text_too_long():
     """Test the /predict endpoint with text that is too long"""
     client = app.test_client()
-    text = "a" * 5001  # More than 5000 characters
+    text = "a" * (MAX_TEXT_LENGTH + 1)  # More than MAX_TEXT_LENGTH characters
     response = client.post('/predict', 
                           json={'text': text},
                           content_type='application/json')

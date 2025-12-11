@@ -10,6 +10,9 @@ app.config['DEBUG'] = False
 # Security: Set maximum content length to prevent DoS (1MB limit)
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 
+# Security: Maximum text length for sentiment analysis
+MAX_TEXT_LENGTH = 5000
+
 # Security: Add security headers to all responses
 @app.after_request
 def add_security_headers(response):
@@ -17,10 +20,11 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1; mode=block'
-    # Content Security Policy
+    # Content Security Policy (Note: 'unsafe-inline' for styles is a trade-off for simplicity)
     response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-    # Prevent MIME type sniffing
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    # HSTS: Only meaningful over HTTPS, but set for production readiness
+    if request.is_secure:
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     return response
 
 def analyze_sentiment(text):
@@ -29,7 +33,7 @@ def analyze_sentiment(text):
         return None
     
     # Security: Limit text length to prevent resource exhaustion
-    if len(text) > 5000:
+    if len(text) > MAX_TEXT_LENGTH:
         return None
     
     analysis = TextBlob(text)
@@ -67,8 +71,8 @@ def predict():
     if len(text) == 0:
         return jsonify({'error': 'Text cannot be empty'}), 400
     
-    if len(text) > 5000:
-        return jsonify({'error': 'Text is too long. Maximum length is 5000 characters'}), 400
+    if len(text) > MAX_TEXT_LENGTH:
+        return jsonify({'error': f'Text is too long. Maximum length is {MAX_TEXT_LENGTH} characters'}), 400
     
     sentiment = analyze_sentiment(text)
     

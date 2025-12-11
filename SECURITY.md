@@ -29,7 +29,7 @@ This document outlines the security vulnerabilities that were identified and fix
 - `X-Frame-Options: DENY` - Prevents clickjacking attacks
 - `X-XSS-Protection: 1; mode=block` - Enables browser XSS protection
 - `Content-Security-Policy` - Restricts resource loading to prevent XSS
-- `Strict-Transport-Security` - Enforces HTTPS connections
+- `Strict-Transport-Security` - Enforces HTTPS connections (only set when using HTTPS)
 
 ### 4. Debug Mode Security
 **Issue**: Debug mode was not explicitly disabled, which could expose sensitive information in production.
@@ -81,6 +81,8 @@ Run tests with: `python -m pytest -v`
 3. **Secure Headers**: Industry-standard security headers implemented
 4. **Error Handling**: Graceful error handling without exposing sensitive information
 5. **Resource Limits**: Protection against resource exhaustion attacks
+6. **Constants**: Security-critical values (like MAX_TEXT_LENGTH) defined as constants for consistency
+7. **Conditional HSTS**: HSTS header only set over HTTPS connections
 
 ## Recommendations for Production
 

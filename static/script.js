@@ -1,3 +1,6 @@
+// Security: Maximum text length constant (must match backend)
+const MAX_TEXT_LENGTH = 5000;
+
 async function analyzeSentiment() {
     const text = document.getElementById('userInput').value;
     const resultDiv = document.getElementById('result');
@@ -9,8 +12,8 @@ async function analyzeSentiment() {
     }
 
     // Security: Validate text length on client side
-    if (text.length > 5000) {
-        alert("Text is too long. Maximum length is 5000 characters.");
+    if (text.length > MAX_TEXT_LENGTH) {
+        alert(`Text is too long. Maximum length is ${MAX_TEXT_LENGTH} characters.`);
         return;
     }
 
